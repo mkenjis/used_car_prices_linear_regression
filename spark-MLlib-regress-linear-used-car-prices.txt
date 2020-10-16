@@ -1,3 +1,5 @@
+---- Feature extraction & Data Munging --------------
+
 val rdd = sc.textFile("used_cars_price/used_cars_price*.csv").map(x => x.split(","))
 
 // checking array size is not uniform
@@ -28,7 +30,9 @@ val rdd2 = rdd1.map( x => {
  })
  
 val rdd3 = rdd1.map( x => Array(x(1),x(2),x(5),x(6),x(7)))
- 
+
+---- Conversion to 1-to-k binary encoding vectors 
+
 def oneHotEncColumns(rddx: org.apache.spark.rdd.RDD[Array[String]], idx: Int):org.apache.spark.rdd.RDD[Array[Double]] = {
   val categories = rddx.map(r => r(idx)).distinct.zipWithIndex.collect.toMap
   val numCategories = categories.size
@@ -66,10 +70,10 @@ res4: Int = 1950
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.regression.LabeledPoint
 
-val data = vect.map(r => {
-  val arr_size = r.size - 1 
-  val l = r(arr_size)
-  val f = r.slice(0,arr_size)
+val data = vect.map(x => {
+  val arr_size = x.size - 1 
+  val l = x(arr_size)
+  val f = x.slice(0,arr_size)
   LabeledPoint(l,Vectors.dense(f))
 })
 
@@ -83,9 +87,8 @@ val testSet = sets(1)
 
 trainSet.cache
 
-import org.apache.spark.mllib.regression.LinearRegressionWithSGD
-val model = LinearRegressionWithSGD.train(trainSet, 200, 1.0)
-----
+---- MLlib Linear regression --------------
+
 import org.apache.spark.mllib.regression.LinearRegressionWithSGD
 val alg = new LinearRegressionWithSGD()
 alg.setIntercept(true)
@@ -189,6 +192,8 @@ val scaler = new StandardScaler(true, true).fit(trainSet.map(x => x.features))
  
 val trainScaled = trainSet.map(x => LabeledPoint(x.label,scaler.transform(x.features)))
 val validScaled = testSet.map(x => LabeledPoint(x.label, scaler.transform(x.features)))
+
+---- MLlib Linear regression --------------
 
 import org.apache.spark.mllib.regression.LinearRegressionWithSGD
 val alg = new LinearRegressionWithSGD()

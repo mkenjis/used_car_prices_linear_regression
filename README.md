@@ -1,5 +1,7 @@
 # used_car_prices_linear_regression
 used car prices linear regression using MLlib
+- Source : Kaggle Dataset
+- URL : https://www.kaggle.com/avikasliwal/used-cars-price-prediction
 
 # Purpose: 
 - use India used car prices dataset to train different linear regression models.
