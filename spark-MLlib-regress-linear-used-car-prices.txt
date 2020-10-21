@@ -185,7 +185,7 @@ validMetrics.rootMeanSquaredError  //  11.52304257465015
 validMetrics.meanSquaredError  // 132.78051017719997
 
 
--------------------------- Decide to scale features because variabiliaty increases even reducing step size of model 
+----- Decide to scale features because variabiliaty increases even reducing step size of model 
 
 import org.apache.spark.mllib.feature.StandardScaler
 val scaler = new StandardScaler(true, true).fit(trainSet.map(x => x.features))
